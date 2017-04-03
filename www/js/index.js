@@ -284,6 +284,7 @@ var app = {
             let profileList = document.getElementById('birthdayList');
             profileList.innerHTML = "";
             let header = document.createElement("h3");
+            header.className="giftheader";
             if (app.savedListProfiles.people != null) {
                 if (app.savedListProfiles.people.length == 0) {
                     header.innerHTML = "You do not have any contacts listed. Please use the Add Person button on the top right corner to create a contact. "
