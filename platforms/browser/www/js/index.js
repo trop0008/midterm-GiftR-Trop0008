@@ -70,12 +70,15 @@ var app = {
             // app.showList();
             document.getElementById("cancelAddPerson").addEventListener("click", cancelModal);
             document.getElementById("saveAddPerson").addEventListener("click", saveModal);
+               document.getElementById("closeAddPerson").addEventListener("touchstart", closeModal);
+                
             getLocalStorage();
             listProfiles();
             break;
         case "giftList":
             document.getElementById("cancelAddGift").addEventListener("click", cancelModal);
             document.getElementById("saveAddGift").addEventListener("click", saveModal);
+                document.getElementById("closeAddGift").addEventListener("touchstart", closeModal);
             if (app.currentPerson.name) {
                 document.getElementById("addGiftName").innerHTML = "Gift idea for " + app.currentPerson.name;
             }
@@ -85,34 +88,65 @@ var app = {
             //do nothing if not coming from the main pages
         }
 
-        function cancelModal(ev) {
-            ev.preventDefault;
+        function closeModal(ev) {
             let clickedLink = ev.target.id;
             let activeModal;
             switch (pageId) {
             case "birthdayList":
-                activeModal = document.getElementById("personModal");
-                activeModal.classList.remove('active');
-                    document.getElementById("contactName").value = "";
-                    document.getElementById("doBirth").value = "";
-                    document.getElementById("headertitle").innerHTML = "Add Person";
-                    document.getElementById("giftError").innerHTML = "";
+                document.getElementById("contactName").value = "";
+                document.getElementById("doBirth").value = "";
+                document.getElementById("headertitle").innerHTML = "Add Person";
+                document.getElementById("personError").innerHTML = "";
+                
                 if (EditFlag) {
                     // if edit is cancelled empty fields
-                    EditFlag = false;
-                    app.currentPerson = null;
                     
+                    app.currentPerson = null;
                 }
+                    EditFlag = false;
+                break;
+            case "giftList":
+                
+                document.getElementById("giftError").innerHTML = "";
+                document.getElementById("giftIdea").value = "";
+                document.getElementById("giftStore").value = "";
+                document.getElementById("giftURL").value = "";
+                document.getElementById("giftCost").value = "";
+                break;
+            default:
+                // if nothing matches do nothing
+            }
+        }
+
+        
+        function cancelModal(ev) {
+            ev.preventDefault;
+            
+            let clickedLink = ev.target.id;
+            let activeModal;
+            switch (pageId) {
+            case "birthdayList":
+                document.getElementById("contactName").value = "";
+                document.getElementById("doBirth").value = "";
+                document.getElementById("headertitle").innerHTML = "Add Person";
+                document.getElementById("personError").innerHTML = "";
+                activeModal = document.getElementById("personModal");
+                activeModal.classList.remove('active');
+                if (EditFlag) {
+                    // if edit is cancelled empty fields
+                    
+                    app.currentPerson = null;
+                }
+                    EditFlag = false;
                 break;
             case "giftList":
                 activeModal = document.getElementById("giftModal");
                 activeModal.classList.remove('active');
                 document.getElementById("giftError").innerHTML = "";
                 document.getElementById("giftIdea").value = "";
-                        document.getElementById("giftStore").value = "";
-                        document.getElementById("giftURL").value = "";
-                        document.getElementById("giftCost").value = "";
-                        document.getElementById("giftError").innerHTML = "";
+                document.getElementById("giftStore").value = "";
+                document.getElementById("giftURL").value = "";
+                document.getElementById("giftCost").value = "";
                 break;
             default:
                 // if nothing matches do nothing
@@ -176,10 +210,13 @@ var app = {
                     document.getElementById("headertitle").innerHTML = "Add Person";
                     activeModal = document.getElementById("personModal");
                     activeModal.classList.remove('active');
+                    document.getElementById("personError").innerHTML = "";
                 }
                 else {
-                    document.getElementById("giftError").innerHTML = "Please insert  both Name and Birtday!";
+                    document.getElementById("personError").innerHTML = "Please insert  both Name and Birtday!";
+                    
                 }
+                    
                 break;
             case "giftList":
                 if (app.currentPerson) {
